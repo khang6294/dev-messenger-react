@@ -13,14 +13,17 @@ export const register = (registerInfo) => {
                     photoURL: `http://gravatar.com/avatar/${md5(createdUser.user.email)}?d=identicon`
                 })
                     .then(() => {
-                        dispatch({type:actionTypes.REGISTER_SUCCESS,payload: createdUser})
+                        firebase.database().ref("users").child(createdUser.user.uid).set({
+                            name: createdUser.user.displayName,
+                            avatar: createdUser.user.photoURL
+                        })
+                            .then(() => {
+                                dispatch({type:actionTypes.REGISTER_SUCCESS,payload: createdUser})
+                            })
                     })
-                // .then(() => {
-                //     this.saveUser(createdUser)
-                //         .then((createdUserUpdated) => {
-                //             dispatch({type:actionTypes.REGISTER_SUCCESS,payload: createdUserUpdated})
-                //         });
-                // })
+                    .catch(err => {
+                        dispatch({type: actionTypes.REGISTER_FAIL,payload:err})
+                    });
                 
             })
             .catch(err => {

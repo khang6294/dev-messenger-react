@@ -35,7 +35,8 @@ class AuthContainer extends Component{
         } else {
             const registerInfo = {
                 email: info.email,
-                password: info.password
+                password: info.password,
+                name: info.name
             }
             this.props.register(registerInfo)
         }

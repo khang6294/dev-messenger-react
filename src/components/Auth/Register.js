@@ -64,7 +64,6 @@ class Register extends React.Component {
     render() {
         const {name,email,password,passwordConfirmation,loading} = this.state;
         const {errors} = this.props
-
         return (
         <Grid textAlign="center" verticalAlign="middle" className="app">
             <Grid.Column style={{ maxWidth: 450 }}>

@@ -31,3 +31,18 @@ export const register = (registerInfo) => {
             });
     }
 }
+
+export const login = (loginInfo) => {
+    return dispatch => {
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(loginInfo.email, loginInfo.password)
+            .then(signedInUser => {
+                dispatch({type:actionTypes.LOGIN_SUCCESS,payload: signedInUser})
+            })
+            .catch(err => {
+                console.error(err);
+                dispatch({type: actionTypes.LOGIN_FAIL,payload:err})
+            });
+    }
+}

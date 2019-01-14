@@ -10,8 +10,8 @@ class Register extends React.Component {
         password: "",
         passwordConfirmation: "",
         loading: false
-     };
-    
+    };
+
     componentDidUpdate(prevProps,prevState){
         if(this.props.userRegister.user){
             if(prevProps.userRegister.user){
@@ -44,8 +44,8 @@ class Register extends React.Component {
         event.preventDefault();
         this.setState({
             loading: true
-        },() => console.log(this.state.loading))
-        this.props.validateForm(this.state)
+        })
+        this.props.validateForm(this.state,this.props.match.path)
     };
 
     handleInputError = (errors, inputName) => {
@@ -67,7 +67,7 @@ class Register extends React.Component {
         return (
         <Grid textAlign="center" verticalAlign="middle" className="app">
             <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" icon color="orange" textAlign="center">
+            <Header as="h1" icon color="orange" textAlign="center">
                 Register
             </Header>
             <Form onSubmit={this.handleSubmit} size="large" loading={loading}>
@@ -135,7 +135,7 @@ class Register extends React.Component {
                 </Message>
             )}
             <Message>
-                Already a user? 
+                Already a user? <Link to="/login">Login</Link>
             </Message>
             </Grid.Column>
         </Grid>

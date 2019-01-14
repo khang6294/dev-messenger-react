@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import * as actionCreators from '../store/actions/index'
 import Register from '../components/Auth/Register'
-
+import Login from '../components/Auth/Login'
+import {Route} from 'react-router-dom'
 class AuthContainer extends Component{
 
     state = {
@@ -16,61 +17,116 @@ class AuthContainer extends Component{
                 errors: errors.concat(this.props.error)
             })
         }
+        if (prevProps.location && this.props.location.pathname !== prevProps.location.pathname){
+            this.setState({
+                errors: []
+            })
+        }
         
     }
 
-    isFormValid = (info) => {
+    isFormValid = (info,form) => {
         let errors = [];
         let error;
-        if (this.isFormEmpty(info)) {
+        if (this.isFormEmpty(info,form)) {
             error = { message: "Fill in all fields" };
             this.setState({
                 errors: errors.concat(error) 
             });
-        } else if (!this.isPasswordValid(info)) {
+        } else if(!this.isPasswordValid(info,form) ){
             error = { message: "Password is invalid" };
             this.setState({
                 errors: errors.concat(error) 
             });
         } else {
-            const registerInfo = {
-                email: info.email,
-                password: info.password,
-                name: info.name
+            if(form === '/register'){
+                const registerInfo = {
+                    email: info.email,
+                    password: info.password,
+                    name: info.name
+                }
+                console.log("A")
+                this.props.register(registerInfo)
+            } else if (form === '/login') {
+                const loginInfo = {
+                    email: info.email,
+                    password: info.password
+                }
+                this.props.login(loginInfo)
             }
-            this.props.register(registerInfo)
+
         }
     };
 
-    isFormEmpty = (info) => {
-        return (
-            !info.name.length ||
-            !info.email.length ||
-            !info.password.length ||
-            !info.passwordConfirmation.length
-        );
+    isFormEmpty = (info,form) => {
+        if(form === '/register'){
+            return (
+                !info.name.length ||
+                !info.email.length ||
+                !info.password.length ||
+                !info.passwordConfirmation.length
+            );
+        } else if(form === '/login'){
+            return (
+                !info.email.length ||
+                !info.password.length
+            );
+        }
+        
     };
 
-    isPasswordValid = (info) => {
-        if (info.password.length < 6 || info.passwordConfirmation.length < 6) {
-            return false;
-        } else if (info.password !== info.passwordConfirmation) {
-            return false;
+    isPasswordValid = (info,form) => {
+        if(form ==='/register'){
+            if (info.password.length < 6 || info.passwordConfirmation.length < 6) {
+                return false;
+            } else if (info.password !== info.passwordConfirmation) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
             return true;
         }
+        
     };
 
     render(){
+        console.log(this.props.user)
         return(
-            <Register
-                userRegister = {this.props.userRegister}
-                validateForm = {(info) => {
-                    this.isFormValid(info)
-                }}
-                errors = {this.state.errors}
-                resetError = {() => this.setState({errors:[]})}
+            <>
+            <Route 
+                exact
+                path = "/register" 
+                render = {props => {
+                    return (
+                    <Register
+                        {...props}
+                        userRegister = {this.props.userRegister}
+                        validateForm = {(info,form) => {
+                            this.isFormValid(info,form)
+                        }}
+                        errors = {this.state.errors}
+                    />
+                    )
+                }} 
             />
+
+            <Route 
+                exact
+                path = "/login" 
+                render = {props => {
+                    return (
+                    <Login
+                        {...props}
+                        validateForm = {(info,form) => {
+                            this.isFormValid(info,form)
+                        }}
+                        errors = {this.state.errors}
+                    />
+                    )
+                }} 
+            />
+            </>
         )
     } 
 }
@@ -78,13 +134,15 @@ class AuthContainer extends Component{
 const mapStateToProps = (state) => {
     return {
         userRegister: state.auth.userRegister,
-        error: state.auth.error
+        error: state.auth.error,
+        user: state.auth.user
     }
 }
 
 
 export default connect(mapStateToProps,
     {
-        register: actionCreators.register
+        register: actionCreators.register,
+        login: actionCreators.login
     }
 )(AuthContainer)

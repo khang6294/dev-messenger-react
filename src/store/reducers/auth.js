@@ -1,6 +1,7 @@
 const initialState = {
     userRegister: {},
-    error:{}
+    error:{},
+    user:{}
 }
 
 
@@ -12,6 +13,16 @@ const manageAuth = (state = initialState, action) => {
             userRegister: action.payload,
         }
         case "REGISTER_FAIL":
+        return {
+            ...state,
+            error: action.payload
+        }
+        case "LOGIN_SUCCESS":
+        return{
+            ...state,
+            user:action.payload
+        }
+        case "LOGIN_FAIL":
         return {
             ...state,
             error: action.payload

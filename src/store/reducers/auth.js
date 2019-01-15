@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes'
 const initialState = {
     userRegister: {},
     error:{},
-    user:{}
+    user:{},
+    
 }
 
 
@@ -28,6 +29,12 @@ const manageAuth = (state = initialState, action) => {
         return {
             ...state,
             error: action.payload
+        }
+        case actionTypes.SET_USER:
+        return {
+            ...state,
+            user: action.payload,
+            
         }
         default:
         return state

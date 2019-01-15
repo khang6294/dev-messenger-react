@@ -46,3 +46,11 @@ export const login = (loginInfo) => {
             });
     }
 }
+
+export const setUser = () => {
+    return dispatch => {
+        firebase.auth().onAuthStateChanged(user => {
+            dispatch({type:actionTypes.SET_USER, payload: user})       
+          });
+    }
+}

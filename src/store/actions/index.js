@@ -1,4 +1,5 @@
 export {
     register,
-    login
+    login,
+    setUser
 } from './auth'

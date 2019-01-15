@@ -1,3 +1,5 @@
+import * as actionTypes from '../actions/actionTypes'
+
 const initialState = {
     userRegister: {},
     error:{},
@@ -7,22 +9,22 @@ const initialState = {
 
 const manageAuth = (state = initialState, action) => {
     switch (action.type){
-        case "REGISTER_SUCCESS":
+        case actionTypes.REGISTER_SUCCESS:
         return {
             ...state,
             userRegister: action.payload,
         }
-        case "REGISTER_FAIL":
+        case actionTypes.REGISTER_FAIL:
         return {
             ...state,
             error: action.payload
         }
-        case "LOGIN_SUCCESS":
+        case actionTypes.LOGIN_SUCCESS:
         return{
             ...state,
             user:action.payload
         }
-        case "LOGIN_FAIL":
+        case actionTypes.LOGIN_FAIL:
         return {
             ...state,
             error: action.payload

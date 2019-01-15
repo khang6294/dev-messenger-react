@@ -10,15 +10,25 @@ class Login extends React.Component {
     };
 
     componentDidUpdate(prevProps,prevState){
-        if(JSON.stringify(this.props.errors) !== JSON.stringify(prevProps.errors)){
-            this.setState({
-                loading:false
-            })
-        } 
-        else if(this.props.errors.length > 0 && JSON.stringify(this.props.errors) === JSON.stringify(prevProps.errors) && prevState.loading !== this.state.loading && this.state.loading === true){
-            this.setState({
-                loading:false
-            })
+        if(this.props.user.user && this.props.user.user !== prevProps.user.user){
+            this.props.history.push('/')
+        }
+        if(this.props.errors[0]){
+            if(prevProps.errors[0]){
+                if(this.props.errors[0].message !== prevProps.errors[0].message){
+                    this.setState({
+                        loading: false
+                    })
+                } else if(this.props.errors[0].message === prevProps.errors[0].message && prevState.loading === true){
+                    this.setState({
+                        loading:false
+                    })
+                }
+            } else {
+                this.setState({
+                    loading: false
+                })
+            }
         }
     }
 
@@ -46,7 +56,6 @@ class Login extends React.Component {
     render() {
         const { email, password, loading } = this.state;
         const {errors} = this.props
-        console.log(this.state.loading)
         return (
         <Grid textAlign="center" verticalAlign="middle" className="app">
             <Grid.Column style={{ maxWidth: 450 }}>

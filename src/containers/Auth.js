@@ -4,13 +4,14 @@ import * as actionCreators from '../store/actions/index'
 import Register from '../components/Auth/Register'
 import Login from '../components/Auth/Login'
 import {Route} from 'react-router-dom'
+
 class AuthContainer extends Component{
 
     state = {
         errors:[]
     }
 
-    componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps,prevState){
         if(JSON.stringify(this.props.error) !== JSON.stringify(prevProps.error)){
             let errors = []
             this.setState({
@@ -24,6 +25,8 @@ class AuthContainer extends Component{
         }
         
     }
+
+    
 
     isFormValid = (info,form) => {
         let errors = [];
@@ -45,7 +48,6 @@ class AuthContainer extends Component{
                     password: info.password,
                     name: info.name
                 }
-                console.log("A")
                 this.props.register(registerInfo)
             } else if (form === '/login') {
                 const loginInfo = {
@@ -122,6 +124,7 @@ class AuthContainer extends Component{
                             this.isFormValid(info,form)
                         }}
                         errors = {this.state.errors}
+                        user={this.props.user}
                     />
                     )
                 }} 

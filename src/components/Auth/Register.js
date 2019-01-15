@@ -13,26 +13,26 @@ class Register extends React.Component {
     };
 
     componentDidUpdate(prevProps,prevState){
-        if(this.props.userRegister.user){
-            if(prevProps.userRegister.user){
-                if(this.props.userRegister.user.email !== prevProps.userRegister.user.email){
+        if(this.props.userRegister.user && prevProps.userRegister.user !== this.props.userRegister.user){
+            this.props.history.push('/login')
+        }
+        if(this.props.errors[0]){
+            if(prevProps.errors[0]){
+                if(this.props.errors[0].message !== prevProps.errors[0].message){
                     this.setState({
                         loading: false
+                    })
+                } else if(this.props.errors[0].message === prevProps.errors[0].message && prevState.loading === true){
+
+                    this.setState({
+                        loading:false
                     })
                 }
             } else {
                 this.setState({
-                    loading:false
+                    loading: false
                 })
             }
-        } else if(JSON.stringify(this.props.errors) !== JSON.stringify(prevProps.errors)){
-            this.setState({
-                loading:false
-            })
-        } else if(this.props.errors.length > 0 && JSON.stringify(this.props.errors) === JSON.stringify(prevProps.errors) && prevState.loading !== this.state.loading){
-            this.setState({
-                loading:false
-            })
         }
     }
 

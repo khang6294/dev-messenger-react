@@ -5,6 +5,7 @@ import {Switch,Route,withRouter} from 'react-router-dom'
 import ChatAppContainer from '../src/containers/ChatApp'
 import {connect} from 'react-redux';
 import * as actionCreators from '../src/store/actions/index'
+import Loading from '../src/components/Loading/Loading'
 class App extends Component {
   
   componentDidUpdate(prevProps){
@@ -18,7 +19,9 @@ class App extends Component {
     this.props.setUser()
   }
   render() {
-    return (
+    return this.props.isLoading ? (
+      <Loading />
+    ) : (
       <div>       
           <Switch>
             <Route path="/" exact component={ChatAppContainer}/>
@@ -33,7 +36,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
       user: state.auth.user,
-      
+      isLoading: state.auth.isLoading
   }
 }
 

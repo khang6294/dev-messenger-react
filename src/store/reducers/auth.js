@@ -4,7 +4,7 @@ const initialState = {
     userRegister: {},
     error:{},
     user:{},
-    
+    isLoading:true
 }
 
 
@@ -34,7 +34,7 @@ const manageAuth = (state = initialState, action) => {
         return {
             ...state,
             user: action.payload,
-            
+            isLoading:false
         }
         default:
         return state

@@ -4,7 +4,6 @@ import { Menu } from "semantic-ui-react";
 
 class SidePanel extends React.Component {
     render() {
-        const { user } = this.props;
 
         return (
         <Menu
@@ -14,7 +13,7 @@ class SidePanel extends React.Component {
             vertical
             style={{ background: "#4c3c4c", fontSize: "1.2rem" }}
         >
-            <UserPanel user={user} />
+            <UserPanel />
         </Menu>
         );
     }

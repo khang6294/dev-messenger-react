@@ -54,3 +54,10 @@ export const setUser = () => {
           });
     }
 }
+
+export const logout = () => {
+    return dispatch => {
+        firebase.auth().signOut()
+            .then(() => dispatch({type:actionTypes.LOGOUT, payload:''}));
+    }
+}

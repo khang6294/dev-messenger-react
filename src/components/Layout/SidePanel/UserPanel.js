@@ -1,8 +1,8 @@
 import React from "react";
-// import firebase from "../../firebase";
 import { Grid, Header, Dropdown, Image } from "semantic-ui-react";
 import Logo from '../../Logo/Logo'
-
+import {connect} from 'react-redux'
+import * as actionCreators from '../../../store/actions/index'
 class UserPanel extends React.Component {
 
 
@@ -22,16 +22,11 @@ class UserPanel extends React.Component {
         },
         {
             key: "signout",
-            text: <span onClick={this.handleSignout}>Sign Out</span>
+            text: <span onClick={() => this.props.logout()}>Log Out</span>
         }
     ];
 
-  // handleSignout = () => {
-  //   firebase
-  //     .auth()
-  //     .signOut()
-  //     .then(() => console.log("signed out!"));
-  // };
+  
 
     render() {
         const {user} = this.props
@@ -64,4 +59,12 @@ class UserPanel extends React.Component {
     }
 }
 
-export default UserPanel;
+
+const mapStateToProps = state => ({
+    user: state.auth.user
+});
+
+
+export default connect(mapStateToProps,{
+    logout: actionCreators.logout
+})(UserPanel);

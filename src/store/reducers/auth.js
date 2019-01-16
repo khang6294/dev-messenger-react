@@ -33,7 +33,12 @@ const manageAuth = (state = initialState, action) => {
         case actionTypes.SET_USER:
         return {
             ...state,
-            user: action.payload,
+            user: action.payload ? action.payload: {},
+            isLoading:false
+        }
+        case actionTypes.LOGOUT:
+        return {
+            ...initialState,
             isLoading:false
         }
         default:

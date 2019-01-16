@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../store/actions/index'
 class ChatApp extends Component {
     render(){
-        console.log(this.props.user)
         return (
             <>
             <Layout user = {this.props.user}/>

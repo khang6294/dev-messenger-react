@@ -8,7 +8,8 @@ import MetaPanel from "./MetaPanel/MetaPanel";
 const layout = (props) => (
     <Grid columns="equal" className="app" style={{ background: "#eee" }}>
         <ColorPanel />
-        <SidePanel user={props.user} />
+        <SidePanel 
+        />
 
         <Grid.Column style={{ marginLeft: 450 }}>
             <Messages />
@@ -21,4 +22,4 @@ const layout = (props) => (
 );
 
 
-export default layout;
+export default React.memo(layout);

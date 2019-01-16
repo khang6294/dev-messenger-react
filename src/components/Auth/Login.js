@@ -1,7 +1,7 @@
 import React from "react";
 import {Grid,Form,Segment,Button,Header,Message} from "semantic-ui-react";
 import { Link } from "react-router-dom";
-
+import Logo from '../Logo/Logo'
 class Login extends React.Component {
     state = {
         email: "",
@@ -60,6 +60,7 @@ class Login extends React.Component {
         <Grid textAlign="center" verticalAlign="middle" className="app">
             <Grid.Column style={{ maxWidth: 450 }}>
             <Header as="h1" icon color="violet" textAlign="center">
+                <Logo size="h1" floated="" inverted={false}/>
                 Login
             </Header>
             <Form onSubmit={this.handleSubmit} size="large" loading={loading}>

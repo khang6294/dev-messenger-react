@@ -1,6 +1,7 @@
 import React from "react";
 import {Grid,Form,Segment,Button,Header,Message} from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import Logo from '../Logo/Logo'
 
 class Register extends React.Component {
     
@@ -67,7 +68,9 @@ class Register extends React.Component {
         return (
         <Grid textAlign="center" verticalAlign="middle" className="app">
             <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h1" icon color="orange" textAlign="center">
+            <Header as="h1" icon color="violet" textAlign="center">
+                <Logo size="h1" floated="" inverted={false}/>
+
                 Register
             </Header>
             <Form onSubmit={this.handleSubmit} size="large" loading={loading}>
@@ -120,7 +123,7 @@ class Register extends React.Component {
                 />
                 <Button
                     disabled={loading}
-                    color="orange"
+                    color="violet"
                     fluid
                     size="large"
                 >

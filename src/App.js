@@ -11,7 +11,7 @@ class App extends Component {
   componentDidUpdate(prevProps){
       if(this.props.user && this.props.user.email !== prevProps.user.email){
         this.props.history.push('/')
-      } else if(!this.props.user.email && this.props.location.pathname !=='/login'){
+      } else if(!this.props.user.email && this.props.location.pathname !=='/login' && this.props.location.pathname !=='/register'){
         this.props.history.push('/login')
       }
       console.log(this.props)

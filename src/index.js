@@ -7,10 +7,12 @@ import {createStore ,combineReducers,applyMiddleware} from 'redux';
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import AuthReducer from './store/reducers/auth'
+import ChannelReducer from './store/reducers/channel'
 import {BrowserRouter} from 'react-router-dom'
 
 const rootReducer = combineReducers({
-    auth: AuthReducer
+    auth: AuthReducer,
+    channel: ChannelReducer
 })
 
 

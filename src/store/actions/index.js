@@ -4,3 +4,10 @@ export {
     setUser,
     logout
 } from './auth'
+
+export {
+    handleAddChannel,
+    loadChannelList,
+    setSelectedChannel,
+    removeLoadChannelList
+} from './channel'

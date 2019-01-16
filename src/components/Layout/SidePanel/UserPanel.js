@@ -1,8 +1,6 @@
 import React from "react";
 import { Grid, Header, Dropdown, Image,Icon } from "semantic-ui-react";
 import Logo from '../../Logo/Logo'
-import {connect} from 'react-redux'
-import * as actionCreators from '../../../store/actions/index'
 class UserPanel extends React.Component {
 
     render() {
@@ -55,11 +53,4 @@ class UserPanel extends React.Component {
 }
 
 
-const mapStateToProps = state => ({
-    user: state.auth.user
-});
-
-
-export default connect(mapStateToProps,{
-    logout: actionCreators.logout
-})(UserPanel);
+export default UserPanel

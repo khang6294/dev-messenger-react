@@ -10,6 +10,7 @@ class MessagesHeader extends React.Component {
             <span>
                 Channel
                 <Icon name={"star outline"} color="black" />
+                {this.props.selectedChannel ? this.props.selectedChannel.name : null}
             </span>
             <Header.Subheader>2 Users</Header.Subheader>
             </Header>

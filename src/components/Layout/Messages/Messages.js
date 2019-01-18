@@ -19,7 +19,9 @@ class Messages extends React.Component {
     render() {
         return (
         <React.Fragment>
-            <MessagesHeader />
+            <MessagesHeader 
+                selectedChannel = {this.props.selectedChannel}
+            />
             <MessageDisplay
                 loadedMessages =  {this.props.loadedMessages}
                 user = {this.props.user}

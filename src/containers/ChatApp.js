@@ -6,14 +6,18 @@ class ChatApp extends Component {
     render(){
         return (
             <>
-            <Layout user = {this.props.user}/>
+            <Layout 
+                user = {this.props.user}
+                selectedChannel = {this.props.selectedChannel}
+            />
             </>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    user: state.auth.user
+    user: state.auth.user,
+    selectedChannel: state.channel.selectedChannel
 });
 
 

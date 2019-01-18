@@ -8,15 +8,17 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import AuthReducer from './store/reducers/auth'
 import ChannelReducer from './store/reducers/channel'
+import MessageReducer from './store/reducers/message'
 import {BrowserRouter} from 'react-router-dom'
 
 const rootReducer = combineReducers({
     auth: AuthReducer,
-    channel: ChannelReducer
+    channel: ChannelReducer,
+    message: MessageReducer
 })
 
 
-const store = createStore(rootReducer,applyMiddleware(thunk));
+export const store = createStore(rootReducer,applyMiddleware(thunk));
 
 
 ReactDOM.render(<Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>, document.getElementById('root'));

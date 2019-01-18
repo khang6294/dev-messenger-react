@@ -11,3 +11,8 @@ export {
     setSelectedChannel,
     removeLoadChannelList
 } from './channel'
+
+export {
+    createNewMessage,
+    loadMessages
+} from './message'

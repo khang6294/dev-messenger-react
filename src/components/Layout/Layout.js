@@ -5,14 +5,17 @@ import SidePanel from "./SidePanel/SidePanel";
 import Messages from "./Messages/Messages";
 import MetaPanel from "./MetaPanel/MetaPanel";
 
-const layout = (props) => (
+const layout = (props) => { 
+    return(
     <Grid columns="equal" className="app" style={{ background: "#eee" }}>
         <ColorPanel />
         <SidePanel 
         />
 
-        <Grid.Column style={{ marginLeft: 450 }}>
-            <Messages />
+        <Grid.Column style={{ marginLeft: 420 }}>
+            <Messages 
+                key={props.selectedChannel && props.selectedChannel.id}
+            />
         </Grid.Column>
 
         <Grid.Column width={4}>
@@ -20,6 +23,7 @@ const layout = (props) => (
         </Grid.Column>
     </Grid>
 );
+}
 
 
 export default React.memo(layout);

@@ -9,8 +9,11 @@ const initialState = {
 const channelReducer = (state = initialState, action) => {
     switch (action.type){
         case actionTypes.ADD_CHANNEL:
+        let channelListClone = [...state.channelList]
+        channelListClone.push(action.payload)
         return {
             ...state,
+            channelList: channelListClone       
         }
         case actionTypes.LOAD_CHANNEL_LIST:
         return {

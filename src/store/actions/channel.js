@@ -11,7 +11,9 @@ export const handleAddChannel = (newChannel) => {
             .child(firebase.database().ref("channels").push().key)
             .update(newChannel)
             .then(() => {
-                dispatch({type:actionTypes.ADD_CHANNEL , payload:''})
+                firebase.database().ref("channels").endAt().limitToLast(1).once("child_added", snap => {
+                    dispatch({type: actionTypes.ADD_CHANNEL,payload: snap.val()})
+                })
             })
             .catch(err => {
                 console.error(err);
@@ -21,9 +23,13 @@ export const handleAddChannel = (newChannel) => {
 
 export const loadChannelList = () => {
     return dispatch => {
-        let channelList = [];
-        firebase.database().ref("channels").on("child_added", snap => {
-            channelList.push(snap.val());
+        firebase.database().ref("channels").once("value", snap => {
+            let channelList = [];
+            const channelKeys = Object.keys(snap.val())
+            const channelsObj = snap.val();
+            for(let i = 0; i< channelKeys.length; i++){
+                channelList.push(channelsObj[channelKeys[i]])
+            }
             return dispatch({type:actionTypes.LOAD_CHANNEL_LIST,payload: channelList})
           });
     }

@@ -8,12 +8,6 @@ class ChannelList extends React.Component {
         modal: false
     };
 
-    componentDidUpdate(prevProps){
-        if(JSON.stringify(prevProps.channelList) !== JSON.stringify(this.props.channelList)){
-            this.props.loadChannelList()
-        }
-    }
-
     componentDidMount(){
         this.props.loadChannelList();
     }

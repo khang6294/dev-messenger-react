@@ -1,5 +1,4 @@
 import React from "react";
-// import firebase from "../../firebase";
 import { Segment, Button, Input } from "semantic-ui-react";
 
 class MessageForm extends React.Component {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Segment, Button, Input } from "semantic-ui-react";
+import { Segment, Button, Input, Grid } from "semantic-ui-react";
 
 class MessageForm extends React.Component {
     state = {
@@ -29,7 +29,9 @@ class MessageForm extends React.Component {
     };
 
     createNewMessageOnEnter = (event) => {
-        if(event.keyCode === 13){
+        if(this.state.message.trim() === "") {
+            return null;
+        } else if(event.keyCode === 13) {
             const { message } = this.state;
 
             const newMessage = {
@@ -47,44 +49,45 @@ class MessageForm extends React.Component {
     }
 
     render() {
-        const { errors, message, loading } = this.state;
-
+        const { errors, message } = this.state;
         return (
         <Segment className="message__form">
-            <Input
-                fluid
-                name="message"
-                onChange={this.handleChange}
-                onKeyUp={this.createNewMessageOnEnter}
-                value={message}
-                style={{ marginBottom: "0.7em" }}
-                label={<Button icon={"add"} />}
-                labelPosition="left"
-                className={
-                    errors.some(error => error.message.includes("message"))
-                    ? "error"
-                    : ""
-                }
-                placeholder="Write your message"
-                disabled = {this.props.selectedChannel ? false: true}
-            />
-            <Button.Group icon widths="2">
-            <Button
-                onClick={this.createNewMessage}
-                disabled = {this.props.selectedChannel ? false: true}
-                color="orange"
-                content="Add Reply"
-                labelPosition="left"
-                icon="edit"
-            />
-            <Button
-                disabled = {this.props.selectedChannel ? false: true}
-                color="teal"
-                content="Upload Media"
-                labelPosition="right"
-                icon="cloud upload"
-            />
-            </Button.Group>
+            <Grid columns = {2}>
+                <Grid.Row>
+                    <Grid.Column width={8}>
+                        <Input
+                            fluid
+                            name="message"
+                            onChange={this.handleChange}
+                            onKeyUp={this.createNewMessageOnEnter}
+                            value={message}
+                            style={{ marginBottom: "0.7em" }}
+                            className={
+                                errors.some(error => error.message.includes("message"))
+                                ? "error"
+                                : ""
+                        }
+                        placeholder="Write your message"
+                        disabled = {this.props.selectedChannel ? false: true}
+                        />
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button
+                            onClick={this.createNewMessage}
+                            disabled = {this.props.selectedChannel && message.trim() !== "" ? false: true}
+                            content="Reply"
+                            labelPosition="left"
+                            icon="send"
+                        />
+                        <Button
+                            disabled = {this.props.selectedChannel ? false: true}
+                            content="Upload"
+                            labelPosition="left"
+                            icon="cloud upload"
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </Segment>
         );
     }

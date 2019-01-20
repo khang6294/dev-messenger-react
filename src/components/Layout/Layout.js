@@ -22,7 +22,9 @@ const layout = (props) => {
         </Grid.Column>
 
         <Grid.Column width={4}>
-            <MetaPanel />
+            <MetaPanel 
+                selectedChannel = {props.selectedChannel}
+            />
         </Grid.Column>
     </Grid>
 );

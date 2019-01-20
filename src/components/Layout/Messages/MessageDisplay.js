@@ -3,15 +3,24 @@ import Message from "./Message";
 import { Segment, Comment } from "semantic-ui-react";
 
 const messageDisplay = (props) => {
-    const {loadedMessages,user} = props
+    const {loadedMessages,user,searchResults,selectedChannel} = props
     let displayMessages = null
-    if(loadedMessages.length > 0){
+    if(searchResults){
+        displayMessages = searchResults.map(message => <Message
+            key={message.timestamp}
+            message={message}
+            user={user}
+        />)
+    } else if(loadedMessages.length > 0){
         displayMessages = loadedMessages.map(message => <Message
             key={message.timestamp}
             message={message}
             user={user}
         />)
-    } else {
+    } else if(!selectedChannel){
+        displayMessages = <p>Please select channel</p>
+    }
+    else {
         displayMessages = <p>Loading...</p>
     }
     return (

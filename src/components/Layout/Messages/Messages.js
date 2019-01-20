@@ -8,6 +8,7 @@ import * as actionCreators from '../../../store/actions/index'
 class Messages extends React.Component {
     state = {
         messagesLoading: true,
+        searchResults: null
     };
 
     componentDidMount() {
@@ -30,17 +31,42 @@ class Messages extends React.Component {
         return `${numOfUsers.length} user${numOfUsers.length > 1 ? "s": ""}`
     }
 
+    onSearch = (searchTerm) => {
+        if(searchTerm === ""){
+            this.setState({
+                searchResults: null
+            })
+        } else {
+            const searchResults = this.props.loadedMessages.reduce((searchRes,message) => {
+                const content = message.content
+                const userName = message.user.name
+                if(content){
+                    if(content.includes(searchTerm) || userName.includes(searchTerm)){
+                        searchRes.push(message)
+                    }
+                }
+                return searchRes
+            },[])
+            this.setState({
+                searchResults: searchResults
+            })
+        }
+    }
+
     render() {
+        console.log(this.state.searchResults)
         return (
         <React.Fragment>
             <MessagesHeader 
                 selectedChannel = {this.props.selectedChannel}
                 channelName = {this.displayChannelName()}
                 numOfUsers = {this.displayNumOfUsers()}
+                onSearch = {(searchTerm) => this.onSearch(searchTerm)}
             />
             <MessageDisplay
                 loadedMessages =  {this.props.loadedMessages}
                 user = {this.props.user}
+                searchResults = {this.state.searchResults}
             />
             <MessageForm
                 selectedChannel={this.props.selectedChannel}

@@ -52,31 +52,33 @@ class MessageForm extends React.Component {
         return (
         <Segment className="message__form">
             <Input
-            fluid
-            name="message"
-            onChange={this.handleChange}
-            onKeyUp={this.createNewMessageOnEnter}
-            value={message}
-            style={{ marginBottom: "0.7em" }}
-            label={<Button icon={"add"} />}
-            labelPosition="left"
-            className={
-                errors.some(error => error.message.includes("message"))
-                ? "error"
-                : ""
-            }
-            placeholder="Write your message"
+                fluid
+                name="message"
+                onChange={this.handleChange}
+                onKeyUp={this.createNewMessageOnEnter}
+                value={message}
+                style={{ marginBottom: "0.7em" }}
+                label={<Button icon={"add"} />}
+                labelPosition="left"
+                className={
+                    errors.some(error => error.message.includes("message"))
+                    ? "error"
+                    : ""
+                }
+                placeholder="Write your message"
+                disabled = {this.props.selectedChannel ? false: true}
             />
             <Button.Group icon widths="2">
             <Button
                 onClick={this.createNewMessage}
-                disabled={loading}
+                disabled = {this.props.selectedChannel ? false: true}
                 color="orange"
                 content="Add Reply"
                 labelPosition="left"
                 icon="edit"
             />
             <Button
+                disabled = {this.props.selectedChannel ? false: true}
                 color="teal"
                 content="Upload Media"
                 labelPosition="right"

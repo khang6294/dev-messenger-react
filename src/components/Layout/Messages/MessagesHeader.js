@@ -5,6 +5,12 @@ class MessagesHeader extends React.Component {
     state = {
         searchTerm: ''
     }
+
+    handleChange = (e) => {
+        this.setState({
+            searchTerm: e.target.value
+        },() => this.props.onSearch(this.state.searchTerm))
+    }
     render() {
         const {searchTerm} = this.state
         return (
@@ -23,6 +29,9 @@ class MessagesHeader extends React.Component {
                 icon="search"
                 name="searchTerm"
                 placeholder="Search Messages"
+                onChange = {this.handleChange}
+                value = {searchTerm}
+                disabled = {this.props.selectedChannel ? false: true}
             />
             </Header>
         </Segment>

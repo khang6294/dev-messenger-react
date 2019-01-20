@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, GridColumn } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import ColorPanel from "./ColorPanel/ColorPanel";
 import SidePanel from "./SidePanel/SidePanel";
 import Messages from "./Messages/Messages";
@@ -7,8 +7,11 @@ import MetaPanel from "./MetaPanel/MetaPanel";
 
 const layout = (props) => { 
     return(
-    <Grid columns="equal" className="app" style={{ background: "#eee" }}>
-        <ColorPanel />
+    <Grid columns="equal" className="app" style={{ background: props.secondaryColor }}>
+        <ColorPanel 
+            key={props.user && props.user.name}
+            user={props.user}
+        />
         <SidePanel 
         />
 

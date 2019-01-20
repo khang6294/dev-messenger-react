@@ -9,12 +9,14 @@ import {Provider} from 'react-redux'
 import AuthReducer from './store/reducers/auth'
 import ChannelReducer from './store/reducers/channel'
 import MessageReducer from './store/reducers/message'
+import ColorReducer from './store/reducers/color'
 import {BrowserRouter} from 'react-router-dom'
 
 const rootReducer = combineReducers({
     auth: AuthReducer,
     channel: ChannelReducer,
-    message: MessageReducer
+    message: MessageReducer,
+    color: ColorReducer
 })
 
 

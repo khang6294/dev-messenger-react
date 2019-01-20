@@ -54,7 +54,6 @@ class Messages extends React.Component {
     }
 
     render() {
-        console.log(this.state.searchResults)
         return (
         <React.Fragment>
             <MessagesHeader 

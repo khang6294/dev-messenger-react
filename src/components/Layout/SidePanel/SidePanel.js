@@ -14,12 +14,12 @@ class SidePanel extends React.Component {
             inverted
             fixed="left"
             vertical
-            style={{ background: "#4c3c4c", fontSize: "1.2rem" }}
+            style={{ background: this.props.primaryColor, fontSize: "1.2rem" }}
         >
             <UserPanel
                 logout = {() => this.props.logout()}
                 user = {this.props.user}
-            
+                primaryColor={this.props.primaryColor}
             />
             <ChannelList
                 handleAddChannel = {(newChannel) => this.props.handleAddChannel(newChannel)}
@@ -36,7 +36,8 @@ class SidePanel extends React.Component {
 
 const mapStateToProps = state => ({
     user: state.auth.user,
-    channelList: state.channel.channelList
+    channelList: state.channel.channelList,
+    primaryColor: state.color.primaryColor,
 });
 
 export default connect(mapStateToProps,{
@@ -44,5 +45,6 @@ export default connect(mapStateToProps,{
     handleAddChannel: actionCreators.handleAddChannel,
     loadChannelList: actionCreators.loadChannelList,
     setSelectedChannel: actionCreators.setSelectedChannel,
-    removeLoadChannelList: actionCreators.removeLoadChannelList
+    removeLoadChannelList: actionCreators.removeLoadChannelList,
+
 })(SidePanel);

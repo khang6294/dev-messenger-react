@@ -16,3 +16,7 @@ export {
     createNewMessage,
     loadMessages
 } from './message'
+
+export {
+    setColors
+} from './color'

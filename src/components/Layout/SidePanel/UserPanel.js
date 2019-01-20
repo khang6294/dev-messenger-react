@@ -2,11 +2,10 @@ import React from "react";
 import { Grid, Header, Dropdown, Image,Icon } from "semantic-ui-react";
 import Logo from '../../Logo/Logo'
 class UserPanel extends React.Component {
-
     render() {
         const {user} = this.props
         return (
-            <Grid style={{ background: "#4c3c4c" }}>
+            <Grid style={{ background: this.props.primaryColor}}>
                 <Grid.Column>
                     <Grid columns={2}>
                         <Grid.Row style={{ padding: "1.2em",paddingLeft:0, margin: 0 }}>

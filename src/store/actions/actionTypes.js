@@ -16,3 +16,7 @@ export const REMOVE_LOAD_CHANNEL_LIST = 'REMOVE_LOAD_CHANNEL_LIST'
 
 export const CREATE_MESSAGE = 'CREATE_MESSAGE'
 export const LOAD_MESSAGES = 'LOAD_MESSAGES'
+
+//color
+
+export const SET_COLORS = "SET_COLORS"

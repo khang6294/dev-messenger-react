@@ -16,11 +16,27 @@ class Messages extends React.Component {
         }
     }
 
+    displayChannelName = () => 
+        this.props.selectedChannel ? this.props.selectedChannel.name : "Channel"
+
+    displayNumOfUsers = () => {
+        const numOfUsers = this.props.loadedMessages.reduce((userArr,message) => {
+            const user = message.user.name
+            if(!userArr.includes(user)){
+                userArr.push(user)
+            }
+            return userArr
+        },[])
+        return `${numOfUsers.length} user${numOfUsers.length > 1 ? "s": ""}`
+    }
+
     render() {
         return (
         <React.Fragment>
             <MessagesHeader 
                 selectedChannel = {this.props.selectedChannel}
+                channelName = {this.displayChannelName()}
+                numOfUsers = {this.displayNumOfUsers()}
             />
             <MessageDisplay
                 loadedMessages =  {this.props.loadedMessages}

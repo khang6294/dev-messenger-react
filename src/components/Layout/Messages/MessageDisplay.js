@@ -27,6 +27,8 @@ const messageDisplay = (props) => {
         <Segment>
             <Comment.Group className="messages">
                 {displayMessages}
+                <div ref={props.setScrollRef}>
+                </div>
             </Comment.Group>
         </Segment>
     )

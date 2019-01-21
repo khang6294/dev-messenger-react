@@ -11,10 +11,24 @@ class Messages extends React.Component {
         searchResults: null
     };
 
+    componentDidUpdate(){
+        if(this.messagesEnd){
+            this.scrollToBottom()
+        }
+    }
+
     componentDidMount() {
         if(this.props.selectedChannel){
             this.props.loadMessages(this.props.selectedChannel.id)      
         }
+    }
+
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({behavior:'smooth'})
+    }
+
+    setScrollRef = (node) => {
+        this.messagesEnd = node
     }
 
     displayChannelName = () => 
@@ -66,6 +80,7 @@ class Messages extends React.Component {
                 loadedMessages =  {this.props.loadedMessages}
                 user = {this.props.user}
                 searchResults = {this.state.searchResults}
+                setScrollRef={this.setScrollRef}
             />
             <MessageForm
                 selectedChannel={this.props.selectedChannel}

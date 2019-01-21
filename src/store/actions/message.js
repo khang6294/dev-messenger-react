@@ -10,13 +10,17 @@ export const createNewMessage = (message) => {
     }
 
     const channelId = store.getState().channel.selectedChannel.id
-    
+    const userUID = store.getState().auth.user.uid
     return dispatch => {
         firebase.database().ref("messages")
             .child(channelId)
             .push()
             .set(newMessage)
             .then(() => {
+                firebase.database().ref("typing")
+                    .child(channelId)
+                    .child(userUID)
+                    .remove();
                 firebase.database().ref("messages").child(channelId).endAt().limitToLast(1).once("child_added", snap => {
                     dispatch({type: actionTypes.CREATE_MESSAGE,payload: snap.val()})
                 })

@@ -1,11 +1,13 @@
 import React from "react";
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
+import firebase from '../../../firebaseConfig'
 
 class ChannelList extends React.Component {
     state = {
         channelName: "",
         channelDescription: "",
-        modal: false
+        modal: false,
+        typingRef: firebase.database().ref("typing")
     };
 
     componentDidMount(){
@@ -51,6 +53,12 @@ class ChannelList extends React.Component {
         this.setState({ 
             activeChannel: channel.id 
         });
+        if(this.props.selectedChannel){
+            this.state.typingRef
+            .child(this.props.selectedChannel.id)
+            .child(this.props.user.uid)
+            .remove();
+        }
         this.props.setSelectedChannel(channel);
     };
     

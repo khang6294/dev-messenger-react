@@ -1,4 +1,5 @@
 import React from "react";
+import firebase from '../../../firebaseConfig'
 import {connect} from 'react-redux'
 import MessagesHeader from "./MessagesHeader";
 import MessageForm from "./MessageForm";
@@ -8,7 +9,10 @@ import * as actionCreators from '../../../store/actions/index'
 class Messages extends React.Component {
     state = {
         messagesLoading: true,
-        searchResults: null
+        searchResults: null,
+        typingRef: firebase.database().ref("typing"),
+        typingUsers: [],
+        connectedRef: firebase.database().ref(".info/connected")
     };
 
     componentDidUpdate(){
@@ -19,7 +23,8 @@ class Messages extends React.Component {
 
     componentDidMount() {
         if(this.props.selectedChannel){
-            this.props.loadMessages(this.props.selectedChannel.id)      
+            this.props.loadMessages(this.props.selectedChannel.id)
+            this.addTypingListeners(this.props.selectedChannel.id)      
         }
     }
 
@@ -67,7 +72,43 @@ class Messages extends React.Component {
         }
     }
 
+    addTypingListeners = channelId => {
+        let typingUsers = [];
+        this.state.typingRef.child(channelId).on("child_added", snap => {
+            if (snap.key !== this.props.user.uid) {
+                typingUsers = typingUsers.concat({
+                    id: snap.key,
+                    name: snap.val()
+                });
+                this.setState({ typingUsers });
+            }
+        });
+    
+        this.state.typingRef.child(channelId).on("child_removed", snap => {
+            const index = typingUsers.findIndex(user => user.id === snap.key);
+            if (index !== -1) {
+                typingUsers = typingUsers.filter(user => user.id !== snap.key);
+                this.setState({ typingUsers });
+            }
+        });
+    
+        this.state.connectedRef.on("value", snap => {
+            if (snap.val() === true) {
+                this.state.typingRef
+                    .child(channelId)
+                    .child(this.props.user.uid)
+                    .onDisconnect()
+                    .remove(err => {
+                        if (err !== null) {
+                            console.error(err);
+                        }
+                    });
+            }
+        });
+    };
+
     render() {
+        console.log(this.state.typingUsers)
         return (
         <React.Fragment>
             <MessagesHeader 
@@ -81,6 +122,7 @@ class Messages extends React.Component {
                 user = {this.props.user}
                 searchResults = {this.state.searchResults}
                 setScrollRef={this.setScrollRef}
+                typingUsers = {this.state.typingUsers}
             />
             <MessageForm
                 selectedChannel={this.props.selectedChannel}

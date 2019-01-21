@@ -26,6 +26,7 @@ class SidePanel extends React.Component {
                 loadChannelList = {() => this.props.loadChannelList()}
                 channelList = {this.props.channelList}
                 user = {this.props.user} 
+                selectedChannel = {this.props.selectedChannel}
                 setSelectedChannel = {(channel) => this.props.setSelectedChannel(channel)}
                 removeLoadChannelList = {() => this.props.removeLoadChannelList()}          
             />
@@ -36,6 +37,7 @@ class SidePanel extends React.Component {
 
 const mapStateToProps = state => ({
     user: state.auth.user,
+    selectedChannel: state.channel.selectedChannel,
     channelList: state.channel.channelList,
     primaryColor: state.color.primaryColor,
 });

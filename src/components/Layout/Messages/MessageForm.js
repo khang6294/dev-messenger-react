@@ -1,5 +1,5 @@
 import React from "react";
-import { Segment, Button, Input, Grid } from "semantic-ui-react";
+import { Segment, Button, Input } from "semantic-ui-react";
 
 class MessageForm extends React.Component {
     state = {
@@ -52,42 +52,35 @@ class MessageForm extends React.Component {
         const { errors, message } = this.state;
         return (
         <Segment className="message__form">
-            <Grid columns = {2}>
-                <Grid.Row>
-                    <Grid.Column width={8}>
-                        <Input
-                            fluid
-                            name="message"
-                            onChange={this.handleChange}
-                            onKeyUp={this.createNewMessageOnEnter}
-                            value={message}
-                            style={{ marginBottom: "0.7em" }}
-                            className={
-                                errors.some(error => error.message.includes("message"))
-                                ? "error"
-                                : ""
-                        }
-                        placeholder="Write your message"
-                        disabled = {this.props.selectedChannel ? false: true}
-                        />
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Button
-                            onClick={this.createNewMessage}
-                            disabled = {this.props.selectedChannel && message.trim() !== "" ? false: true}
-                            content="Reply"
-                            labelPosition="left"
-                            icon="send"
-                        />
-                        <Button
-                            disabled = {this.props.selectedChannel ? false: true}
-                            content="Upload"
-                            labelPosition="left"
-                            icon="cloud upload"
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Input
+                fluid
+                name="message"
+                onChange={this.handleChange}
+                onKeyUp={this.createNewMessageOnEnter}
+                value={message}
+                style={{ marginBottom: "0.7em" }}
+                className={
+                    errors.some(error => error.message.includes("message"))
+                    ? "error"
+                    : ""
+            }
+                placeholder="Write your message"
+                disabled = {this.props.selectedChannel ? false: true}
+                action
+                
+            >
+            <input />
+            <Button
+                disabled = {this.props.selectedChannel ? false: true}
+                icon="send"
+                onClick={this.createNewMessage}
+            />
+            <Button
+                disabled = {this.props.selectedChannel ? false: true}
+                icon="cloud upload"            
+                onClick={this.createNewMessage}
+            />
+            </Input>            
         </Segment>
         );
     }

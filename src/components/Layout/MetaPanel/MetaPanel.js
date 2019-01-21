@@ -16,7 +16,6 @@ class MetaPanel extends React.Component {
     formatCount = num => (num > 1 || num === 0 ? `${num} posts` : `${num} post`);
 
     render() {
-        console.log(this.props.selectedChannel)
         const { activeIndex } = this.state;
         const { selectedChannel } = this.props
         return (

@@ -76,9 +76,9 @@ class ChannelList extends React.Component {
             <Menu.Menu style={{ paddingBottom: "2em" }}>
             <Menu.Item>
                 <span>
-                <Icon name="exchange" /> CHANNELS
+                <Icon name="exchange"/> CHANNELS
                 </span>{" "}
-                ({channelList.length}) <Icon name="add" onClick={this.openModal} />
+                ({channelList.length}) <Icon name="add" link onClick={this.openModal} />
             </Menu.Item>
             {channelListDisplay}
             </Menu.Menu>

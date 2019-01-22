@@ -5,10 +5,8 @@ import MessagesHeader from "./MessagesHeader";
 import MessageForm from "./MessageForm";
 import MessageDisplay from './MessageDisplay'
 import * as actionCreators from '../../../store/actions/index'
-
 class Messages extends React.Component {
     state = {
-        messagesLoading: true,
         searchResults: null,
         typingRef: firebase.database().ref("typing"),
         typingUsers: [],
@@ -92,23 +90,24 @@ class Messages extends React.Component {
             }
         });
     
-        this.state.connectedRef.on("value", snap => {
-            if (snap.val() === true) {
-                this.state.typingRef
-                    .child(channelId)
-                    .child(this.props.user.uid)
-                    .onDisconnect()
-                    .remove(err => {
-                        if (err !== null) {
-                            console.error(err);
-                        }
-                    });
-            }
-        });
+        // this.state.connectedRef.on("value", snap => {
+        //     console.log(channelId)
+        //     console.log(this.props.user.uid)
+        //     if (snap.val() === true) {
+        //         this.state.typingRef
+        //             .child(channelId)
+        //             .child(this.props.user.uid)
+        //             .onDisconnect()
+        //             .remove(err => {
+        //                 if (err !== null) {
+        //                     console.error(err);
+        //                 }
+        //             });
+        //     }
+        // });
     };
 
     render() {
-        console.log(this.state.typingUsers)
         return (
         <React.Fragment>
             <MessagesHeader 
@@ -123,6 +122,7 @@ class Messages extends React.Component {
                 searchResults = {this.state.searchResults}
                 setScrollRef={this.setScrollRef}
                 typingUsers = {this.state.typingUsers}
+                messageLoading = {this.props.messageLoading}
             />
             <MessageForm
                 selectedChannel={this.props.selectedChannel}
@@ -139,7 +139,8 @@ class Messages extends React.Component {
 const mapStateToProps = state => ({
     user: state.auth.user,
     selectedChannel: state.channel.selectedChannel,
-    loadedMessages: state.message.loadedMessages
+    loadedMessages: state.message.loadedMessages,
+    messageLoading: state.message.messageLoading
 })
 
 export default connect(mapStateToProps,{

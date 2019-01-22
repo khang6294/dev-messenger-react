@@ -2,8 +2,10 @@ import React from 'react';
 import Message from "./Message";
 import { Segment, Comment } from "semantic-ui-react";
 import Typing from './Typing'
+import Skeleton from '../../Loading/Skeleton'
+
 const messageDisplay = (props) => {
-    const {loadedMessages,user,searchResults,selectedChannel,typingUsers} = props
+    const {loadedMessages,user,searchResults,typingUsers} = props
     let displayMessages = null
     if(searchResults){
         displayMessages = searchResults.map(message => <Message
@@ -17,8 +19,12 @@ const messageDisplay = (props) => {
             message={message}
             user={user}
         />)
-    } else if(!selectedChannel){
-        displayMessages = <p>Please select channel</p>
+    } else if(props.messageLoading){
+        displayMessages = (<>
+            {[...Array(10)].map((_, i) => (
+              <Skeleton key={i} />
+            ))}
+          </>)
     }
     else {
         displayMessages = <p>Loading...</p>

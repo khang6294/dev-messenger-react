@@ -16,10 +16,6 @@ class MessageForm extends React.Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
-    handleKeyDown = () => {
-        
-    };
-
     createNewMessage = () => {
         const { message } = this.state;
 

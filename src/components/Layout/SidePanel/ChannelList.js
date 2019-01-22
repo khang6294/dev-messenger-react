@@ -10,6 +10,15 @@ class ChannelList extends React.Component {
         typingRef: firebase.database().ref("typing")
     };
 
+    componentDidUpdate(prevProps){
+        if(!this.props.selectedChannel && this.props.channelList.length > 0){
+            this.props.setSelectedChannel(this.props.channelList[0])
+            this.setState({ 
+                activeChannel: this.props.channelList[0].id
+            });
+        }
+    }
+
     componentDidMount(){
         this.props.loadChannelList();
     }
@@ -63,6 +72,7 @@ class ChannelList extends React.Component {
     };
     
     render() {
+        console.log(this.state.activeChannel)
         const { modal } = this.state;
         const { channelList } = this.props;
         let channelListDisplay;

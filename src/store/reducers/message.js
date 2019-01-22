@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
-    loadedMessages : []
+    loadedMessages : [],
+    messageLoading: true
 }
 
 
@@ -17,7 +18,8 @@ const messageReducer = (state = initialState, action) => {
         case actionTypes.LOAD_MESSAGES:
         return {
             ...state,
-            loadedMessages: action.payload
+            loadedMessages: action.payload,
+            messageLoading: false
         }
         default:
         return state

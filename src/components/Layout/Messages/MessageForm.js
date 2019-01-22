@@ -3,20 +3,29 @@ import { Segment, Button, Input,Popup } from "semantic-ui-react";
 import { Picker, emojiIndex } from "emoji-mart";
 import firebase from '../../../firebaseConfig'
 import "emoji-mart/css/emoji-mart.css";
+import uuidv4 from "uuid/v4";
+import mime from "mime-types";
+
 class MessageForm extends React.Component {
     state = {
         message: "",
         loading: false,
+        uploadTask: null,
+        uploadState: "",
+        percentUploaded: 0,
         errors: [],
         storageRef: firebase.storage().ref(),
-        typingRef: firebase.database().ref("typing")
+        typingRef: firebase.database().ref("typing"),
+        file: null,
+        authorized: ["image/jpeg", "image/png"],
+        messageRef: firebase.database().ref("messages")
     };
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
     };
 
-    createNewMessage = () => {
+    createNewMessage = (fileUrl = null) => {
         const { message } = this.state;
 
         const newMessage = {
@@ -24,9 +33,13 @@ class MessageForm extends React.Component {
                 id: this.props.user.uid,
                 name: this.props.user.displayName,
                 avatar: this.props.user.photoURL
-            },
-            content: message
+            }
         };
+        if (fileUrl !== null) {
+            newMessage["image"] = fileUrl;
+          } else {
+            newMessage["content"] = message;
+          }
 
         this.props.createNewMessage(newMessage)
         this.setState({loading: false,message:""})
@@ -86,6 +99,87 @@ class MessageForm extends React.Component {
         }
     }
 
+    onChangeFile = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            this.setState({ file },() => this.sendFile());
+        }
+    }
+    
+    sendFile = () => {
+        const { file } = this.state;    
+        if (file !== null) {
+            if (this.isAuthorized(file.name)) {
+                const metadata = { contentType: mime.lookup(file.name) };
+                this.uploadFile(file, metadata);
+                this.clearFile();
+            }
+        }
+    };
+    
+    isAuthorized = filename => this.state.authorized.includes(mime.lookup(filename));
+    
+    clearFile = () => this.setState({ file: null });
+
+    uploadFile = (file, metadata) => {
+        const pathToUpload = this.props.selectedChannel.id;
+        const ref = this.state.messageRef;
+        const filePath = `chat/public/${uuidv4()}.jpg`;
+    
+        this.setState({
+            uploadState: "uploading",
+            uploadTask: this.state.storageRef.child(filePath).put(file, metadata)
+        }, () => {
+            this.state.uploadTask.on("state_changed", snap => {
+                const percentUploaded = Math.round(
+                    (snap.bytesTransferred / snap.totalBytes) * 100
+                );
+                this.setState({ percentUploaded });
+            },
+            err => {
+                console.error(err);
+                this.setState({
+                    errors: this.state.errors.concat(err),
+                    uploadState: "error",
+                    uploadTask: null
+                });
+            },
+            () => {
+                this.state.uploadTask.snapshot.ref
+                    .getDownloadURL()
+                    .then(downloadUrl => {
+                        this.sendFileMessage(downloadUrl, ref, pathToUpload);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        this.setState({
+                            // errors: this.state.errors.concat(err),
+                            uploadState: "error",
+                            uploadTask: null
+                        });
+                    });
+                }
+            );
+        }
+        );
+    };
+    
+    sendFileMessage = (fileUrl, ref, pathToUpload) => {
+        ref
+            .child(pathToUpload)
+            .push()
+            .set(this.createNewMessage(fileUrl))
+            .then(() => {
+                this.setState({ uploadState: "done" });
+            })
+            .catch(err => {
+                console.error(err);
+                this.setState({
+                errors: this.state.errors.concat(err)
+                });
+            });
+    };
+
     render() {
         const { errors, message } = this.state;
         return (
@@ -129,11 +223,21 @@ class MessageForm extends React.Component {
                 on='click'
                 position='top right'
             />
-            <Button
-                disabled = {this.props.selectedChannel ? false: true}
-                icon="cloud upload"            
-                onClick={this.createNewMessage}
-            />
+            <>
+                <Button
+                    as="label"
+                    htmlFor="uploadInput"
+                    icon="image"
+                    disabled = {this.props.selectedChannel ? false: true} 
+                />
+                <input
+                    hidden
+                    id="uploadInput"
+                    multiple
+                    type="file"
+                    onChange={this.onChangeFile} 
+                />
+            </>         
             </Input>            
         </Segment>
         );

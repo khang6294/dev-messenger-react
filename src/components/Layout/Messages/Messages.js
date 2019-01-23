@@ -10,7 +10,8 @@ class Messages extends React.Component {
         searchResults: null,
         typingRef: firebase.database().ref("typing"),
         typingUsers: [],
-        connectedRef: firebase.database().ref(".info/connected")
+        connectedRef: firebase.database().ref(".info/connected"),
+        privateMessagesRef: firebase.database().ref("privateMessages")
     };
 
     componentDidUpdate(){
@@ -115,6 +116,7 @@ class Messages extends React.Component {
                 channelName = {this.displayChannelName()}
                 numOfUsers = {this.displayNumOfUsers()}
                 onSearch = {(searchTerm) => this.onSearch(searchTerm)}
+                isPrivateChannel = {this.props.isPrivateChannel}
             />
             <MessageDisplay
                 loadedMessages =  {this.props.loadedMessages}
@@ -130,6 +132,7 @@ class Messages extends React.Component {
                 createNewMessage = {(message) => {
                     this.props.createNewMessage(message)
                 }}
+                isPrivateChannel = {this.props.isPrivateChannel}
             />
         </React.Fragment>
         );
@@ -139,8 +142,9 @@ class Messages extends React.Component {
 const mapStateToProps = state => ({
     user: state.auth.user,
     selectedChannel: state.channel.selectedChannel,
+    isPrivateChannel: state.channel.isPrivateChannel,
     loadedMessages: state.message.loadedMessages,
-    messageLoading: state.message.messageLoading
+    messageLoading: state.message.messageLoading,
 })
 
 export default connect(mapStateToProps,{

@@ -68,6 +68,7 @@ class ChannelList extends React.Component {
             .child(this.props.user.uid)
             .remove();
         }
+        this.props.setPrivateChannel();
         this.props.setSelectedChannel(channel);
     };
     

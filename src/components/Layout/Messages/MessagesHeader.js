@@ -17,8 +17,10 @@ class MessagesHeader extends React.Component {
         <Segment clearing>
             <Header fluid="true" as="h2" floated="left" style={{ marginBottom: 0 }}>
             <span>
-            {this.props.channelName}
+            {this.props.isPrivateChannel ? `@${this.props.channelName}`:`#${this.props.channelName}` }
+            {!this.props.isPrivateChannel &&
             <Icon name={"star outline"} color="black" />
+            }
             </span>
             <Header.Subheader>{this.props.numOfUsers}</Header.Subheader>
             </Header>

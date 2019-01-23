@@ -4,6 +4,7 @@ import { Menu } from "semantic-ui-react";
 import {connect} from 'react-redux'
 import ChannelList from './ChannelList'
 import * as actionCreators from '../../../store/actions/index'
+import DirectMessages from './DirectMessages'
 
 class SidePanel extends React.Component {
     
@@ -28,7 +29,15 @@ class SidePanel extends React.Component {
                 user = {this.props.user} 
                 selectedChannel = {this.props.selectedChannel}
                 setSelectedChannel = {(channel) => this.props.setSelectedChannel(channel)}
-                removeLoadChannelList = {() => this.props.removeLoadChannelList()}          
+                removeLoadChannelList = {() => this.props.removeLoadChannelList()}
+                setPrivateChannel ={() => this.props.setPrivateChannel(false)}
+          
+            />
+
+            <DirectMessages 
+                user={this.props.user} 
+                setSelectedChannel = {(channel) => this.props.setSelectedChannel(channel)}
+                setPrivateChannel ={() => this.props.setPrivateChannel(true)}
             />
         </Menu>
         );
@@ -47,6 +56,6 @@ export default connect(mapStateToProps,{
     handleAddChannel: actionCreators.handleAddChannel,
     loadChannelList: actionCreators.loadChannelList,
     setSelectedChannel: actionCreators.setSelectedChannel,
+    setPrivateChannel: actionCreators.setPrivateChannel,
     removeLoadChannelList: actionCreators.removeLoadChannelList,
-
 })(SidePanel);

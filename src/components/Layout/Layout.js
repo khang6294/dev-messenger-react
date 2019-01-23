@@ -24,6 +24,7 @@ const layout = (props) => {
         <Grid.Column width={4}>
             <MetaPanel 
                 selectedChannel = {props.selectedChannel}
+                isPrivateChannel={props.isPrivateChannel}
             />
         </Grid.Column>
     </Grid>

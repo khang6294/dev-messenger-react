@@ -39,6 +39,15 @@ export const setSelectedChannel = (channel) => {
     return ({type:actionTypes.SET_SELECTED_CHANNEL, payload: channel})
 }
 
+export const setPrivateChannel = isPrivateChannel => {
+    return {
+        type: actionTypes.SET_PRIVATE_CHANNEL,
+        payload: {
+            isPrivateChannel
+        }
+    };
+};
+
 export const removeLoadChannelList = () => {
     return dispatch => {
         firebase.database().ref("channels").off();

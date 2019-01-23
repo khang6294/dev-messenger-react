@@ -10,6 +10,7 @@ class ChatApp extends Component {
                 user = {this.props.user}
                 selectedChannel = {this.props.selectedChannel}
                 secondaryColor= {this.props.secondaryColor}
+                isPrivateChannel = {this.props.isPrivateChannel}
             />
             </>
         )
@@ -19,6 +20,7 @@ class ChatApp extends Component {
 const mapStateToProps = state => ({
     user: state.auth.user,
     selectedChannel: state.channel.selectedChannel,
+    isPrivateChannel: state.channel.isPrivateChannel,
     secondaryColor: state.color.secondaryColor
 });
 

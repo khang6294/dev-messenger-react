@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
     channelList: [],
-    selectedChannel:null
+    selectedChannel:null,
+    isPrivateChannel: false
 }
 
 
@@ -25,6 +26,11 @@ const channelReducer = (state = initialState, action) => {
             ...state,
             selectedChannel: action.payload
         }
+        case actionTypes.SET_PRIVATE_CHANNEL:
+        return {
+            ...state,
+            isPrivateChannel: action.payload.isPrivateChannel
+        };
         default:
         return state
     }

@@ -18,7 +18,8 @@ class MessageForm extends React.Component {
         typingRef: firebase.database().ref("typing"),
         file: null,
         authorized: ["image/jpeg", "image/png"],
-        messageRef: firebase.database().ref("messages")
+        messageRef: firebase.database().ref("messages"),
+        privateMessagesRef: firebase.database().ref("privateMessages")
     };
 
     handleChange = event => {
@@ -121,10 +122,17 @@ class MessageForm extends React.Component {
     
     clearFile = () => this.setState({ file: null });
 
+    getPath = () => {
+        if (this.props.isPrivateChannel) {
+          return `chat/private-${this.props.selectedChannel.id}`;
+        } else {
+          return "chat/public";
+        }
+    };
     uploadFile = (file, metadata) => {
         const pathToUpload = this.props.selectedChannel.id;
-        const ref = this.state.messageRef;
-        const filePath = `chat/public/${uuidv4()}.jpg`;
+        const ref = this.props.isPrivateChannel ? this.state.privateMessagesRef : this.state.messageRef;
+        const filePath = `${this.getPath()}/${uuidv4()}.jpg`;
     
         this.setState({
             uploadState: "uploading",

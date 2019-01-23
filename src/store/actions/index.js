@@ -9,6 +9,7 @@ export {
     handleAddChannel,
     loadChannelList,
     setSelectedChannel,
+    setPrivateChannel,
     removeLoadChannelList
 } from './channel'
 

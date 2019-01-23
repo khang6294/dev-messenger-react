@@ -8,11 +8,15 @@ export const createNewMessage = (message) => {
         ...message,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     }
-
-    const channelId = store.getState().channel.selectedChannel.id
     const userUID = store.getState().auth.user.uid
+    const isPrivateChannel = store.getState().channel.isPrivateChannel
+    const channelId = store.getState().channel.selectedChannel.id
+    let messageRef;
+    if(isPrivateChannel){
+        messageRef = firebase.database().ref("privateMessages")
+    } else messageRef = firebase.database().ref("messages")
     return dispatch => {
-        firebase.database().ref("messages")
+        messageRef
             .child(channelId)
             .push()
             .set(newMessage)
@@ -21,7 +25,7 @@ export const createNewMessage = (message) => {
                     .child(channelId)
                     .child(userUID)
                     .remove();
-                firebase.database().ref("messages").child(channelId).endAt().limitToLast(1).once("child_added", snap => {
+                messageRef.child(channelId).endAt().limitToLast(1).once("child_added", snap => {
                     dispatch({type: actionTypes.CREATE_MESSAGE,payload: snap.val()})
                 })
 
@@ -35,8 +39,13 @@ export const createNewMessage = (message) => {
 
 
 export const loadMessages = (channelId) => {
+    const isPrivateChannel = store.getState().channel.isPrivateChannel
+    let messageRef;
+    if(isPrivateChannel){
+        messageRef = firebase.database().ref("privateMessages")
+    } else messageRef = firebase.database().ref("messages")
     return dispatch => {
-        firebase.database().ref("messages").child(channelId).once("value", snap => {
+        messageRef.child(channelId).once("value", snap => {
             if(!snap.val()){
                 dispatch({type:actionTypes.LOAD_MESSAGES,payload: []})
             } else {

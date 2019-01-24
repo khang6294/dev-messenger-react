@@ -42,6 +42,7 @@ export const loadMessages = (channelId) => {
     } else messageRef = firebase.database().ref("messages")
     return dispatch => {
         messageRef.child(channelId).on("value", snap => {
+            // console.log(channelId)
             if(!snap.val()){
                 dispatch({type:actionTypes.LOAD_MESSAGES,payload: []})
             } else {
@@ -51,7 +52,9 @@ export const loadMessages = (channelId) => {
                 for(let i = 0; i< messageKeys.length; i++){
                     loadedMessages.push(messagesObj[messageKeys[i]])
                 }
-                dispatch({type:actionTypes.LOAD_MESSAGES,payload: loadedMessages})
+                if(channelId === store.getState().channel.selectedChannel.id){
+                    dispatch({type:actionTypes.LOAD_MESSAGES,payload: loadedMessages})
+                }
             }   
             });
             

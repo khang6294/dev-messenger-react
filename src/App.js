@@ -26,7 +26,7 @@ class App extends Component {
     ) : (
       <div>       
           <Switch>
-            <Route path="/" exact component={ChatAppContainer}/>
+            <Route path="/" exact render={(props) => <ChatAppContainer {...props} key={this.props.user.uid}/>}/>
             <AuthContainer/>
           </Switch>          
       </div>

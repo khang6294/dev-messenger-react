@@ -20,27 +20,28 @@ class DirectMessages extends React.Component {
     addListeners = currentUserUid => {
         let loadedUsers = [];
         this.state.usersRef.on("child_added", snap => {
-        if (currentUserUid !== snap.key) {
-            let user = snap.val();
-            user["uid"] = snap.key;
-            user["status"] = "offline";
-            loadedUsers.push(user);
-            this.setState({ users: loadedUsers });
-        }
+            if (currentUserUid !== snap.key) {
+                let user = snap.val();
+                user["uid"] = snap.key;
+                user["status"] = "offline";
+                loadedUsers.push(user);
+                console.log(loadedUsers)
+                this.setState({ users: loadedUsers });
+            }
         });
 
         this.state.connectedRef.on("value", snap => {
-        if (snap.val() === true) {
-            if(currentUserUid){
-                const ref = this.state.presenceRef.child(currentUserUid);
-                ref.set(true);
-                ref.onDisconnect().remove(err => {
-                    if (err !== null) {
-                        console.error(err);
-                    }
-                });
-            } 
-        }
+            if (snap.val() === true) {
+                if(currentUserUid){
+                    const ref = this.state.presenceRef.child(currentUserUid);
+                    ref.set(true);
+                    ref.onDisconnect().remove(err => {
+                        if (err !== null) {
+                            console.error(err);
+                        }
+                    });
+                } 
+            }
         });
 
         this.state.presenceRef.on("child_added", snap => {
@@ -71,8 +72,8 @@ class DirectMessages extends React.Component {
     changeChannel = user => {
         const channelId = this.getChannelId(user.uid);
         const channelData = {
-        id: channelId,
-        name: user.name
+            id: channelId,
+            name: user.name
         };
         this.props.setSelectedChannel(channelData);
         this.props.setPrivateChannel();
@@ -92,7 +93,7 @@ class DirectMessages extends React.Component {
 
     render() {
         const { users, activeChannel } = this.state;
-
+        // console.log(users)
         return (
         <Menu.Menu className="menu">
             <Menu.Item>

@@ -21,15 +21,11 @@ export const createNewMessage = (message) => {
             .push()
             .set(newMessage)
             .then(() => {
+                dispatch({type: actionTypes.CREATE_MESSAGE})
                 firebase.database().ref("typing")
                     .child(channelId)
                     .child(userUID)
-                    .remove();
-                messageRef.child(channelId).endAt().limitToLast(1).once("child_added", snap => {
-                    dispatch({type: actionTypes.CREATE_MESSAGE,payload: snap.val()})
-                })
-
-                  
+                    .remove()
             })
             .catch(err => {
                 console.error(err);
@@ -45,7 +41,7 @@ export const loadMessages = (channelId) => {
         messageRef = firebase.database().ref("privateMessages")
     } else messageRef = firebase.database().ref("messages")
     return dispatch => {
-        messageRef.child(channelId).once("value", snap => {
+        messageRef.child(channelId).on("value", snap => {
             if(!snap.val()){
                 dispatch({type:actionTypes.LOAD_MESSAGES,payload: []})
             } else {
@@ -56,8 +52,8 @@ export const loadMessages = (channelId) => {
                     loadedMessages.push(messagesObj[messageKeys[i]])
                 }
                 dispatch({type:actionTypes.LOAD_MESSAGES,payload: loadedMessages})
-            }
-        })
-    }
-    
+            }   
+            });
+            
+    } 
 }

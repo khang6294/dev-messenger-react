@@ -1,23 +1,72 @@
 import React from "react";
-import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
+import { Menu, Icon, Modal, Form, Input, Button,Label } from "semantic-ui-react";
 import firebase from '../../../firebaseConfig'
 
 class ChannelList extends React.Component {
     state = {
         channelName: "",
+        channel: null,
         channelDescription: "",
         modal: false,
-        typingRef: firebase.database().ref("typing")
+        typingRef: firebase.database().ref("typing"),
+        messagesRef: firebase.database().ref("messages"),
+        notifications: []
     };
 
     componentDidUpdate(prevProps){
         if(!this.props.selectedChannel && this.props.channelList.length > 0){
             this.props.setSelectedChannel(this.props.channelList[0])
             this.setState({ 
-                activeChannel: this.props.channelList[0].id
+                activeChannel: this.props.channelList[0].id,
+                channel: this.props.channelList[0].id
+            },() => {
+                for(let i = 0; i < this.props.channelList.length; i++){
+                    this.addNotificationListener(this.props.channelList[i].id);
+                }
             });
         }
     }
+
+    addNotificationListener = channelId => {
+        this.state.messagesRef.child(channelId).on("value", snap => {
+            if (this.state.channel) {
+                this.handleNotifications(
+                    channelId,
+                    this.state.channel.id,
+                    this.state.notifications,
+                    snap
+                );
+            }
+        });
+    };
+    
+    handleNotifications = (channelId, currentChannelId, notifications, snap) => {
+        let lastTotal = 0;
+    
+        let index = notifications.findIndex(
+          notification => notification.id === channelId
+        );
+    
+        if (index !== -1) {
+            if (channelId !== currentChannelId) {
+                lastTotal = notifications[index].total;
+        
+                if (snap.numChildren() - lastTotal > 0) {
+                notifications[index].count = snap.numChildren() - lastTotal;
+                }
+            }
+            notifications[index].lastKnownTotal = snap.numChildren();
+            } else {
+            notifications.push({
+                id: channelId,
+                total: snap.numChildren(),
+                lastKnownTotal: snap.numChildren(),
+                count: 0
+            });
+        }
+    
+        this.setState({ notifications });
+    };
 
     componentDidMount(){
         this.props.loadChannelList();
@@ -58,10 +107,26 @@ class ChannelList extends React.Component {
         this.closeModal();
     };
 
+    clearNotifications = () => {
+        let index = this.state.notifications.findIndex(
+            notification => notification.id === this.state.channel.id
+        );
+    
+        if (index !== -1) {
+            let updatedNotifications = [...this.state.notifications];
+            updatedNotifications[index].total = this.state.notifications[
+                index
+            ].lastKnownTotal;
+            updatedNotifications[index].count = 0;
+            this.setState({ notifications: updatedNotifications });
+        }
+    };
+
     changeChannel = channel => {
         this.setState({ 
-            activeChannel: channel.id 
-        });
+            activeChannel: channel.id,
+            channel: channel 
+        },() => this.clearNotifications());
         if(this.props.selectedChannel){
             this.state.typingRef
             .child(this.props.selectedChannel.id)
@@ -70,6 +135,18 @@ class ChannelList extends React.Component {
         }
         this.props.setPrivateChannel();
         this.props.setSelectedChannel(channel);
+    };
+
+    getNotificationCount = channel => {
+        let count = 0;
+    
+        this.state.notifications.forEach(notification => {
+            if (notification.id === channel.id) {
+                count = notification.count;
+            }
+        });
+    
+        if (count > 0) return count;
     };
     
     render() {
@@ -92,6 +169,9 @@ class ChannelList extends React.Component {
                         false
                     }
                 >
+                {this.getNotificationCount(channel) && (
+                <Label color="red">{this.getNotificationCount(channel)}</Label>
+                )}
                 # {channel.name}
                 </Menu.Item>
             ))

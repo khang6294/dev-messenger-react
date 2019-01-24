@@ -73,7 +73,7 @@ class ChannelList extends React.Component {
     };
     
     render() {
-        console.log(this.state.activeChannel)
+        // console.log(this.props.selectedChannel)
         const { modal } = this.state;
         const { channelList } = this.props;
         let channelListDisplay;
@@ -84,7 +84,13 @@ class ChannelList extends React.Component {
                     onClick={() => this.changeChannel(channel)}
                     name={channel.name}
                     style={{ opacity: 0.8 }}
-                    active={channel.id === this.state.activeChannel}
+                    active={
+                        !this.props.isPrivateChannel? 
+                        !this.state.activeChannel && this.props.selectedChannel ? 
+                        channel.id === this.props.selectedChannel.id: 
+                        channel.id === this.state.activeChannel : 
+                        false
+                    }
                 >
                 # {channel.name}
                 </Menu.Item>

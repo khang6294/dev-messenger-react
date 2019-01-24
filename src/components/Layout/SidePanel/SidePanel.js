@@ -31,6 +31,7 @@ class SidePanel extends React.Component {
                 setSelectedChannel = {(channel) => this.props.setSelectedChannel(channel)}
                 removeLoadChannelList = {() => this.props.removeLoadChannelList()}
                 setPrivateChannel ={() => this.props.setPrivateChannel(false)}
+                isPrivateChannel = {this.props.isPrivateChannel}
           
             />
 
@@ -38,6 +39,8 @@ class SidePanel extends React.Component {
                 user={this.props.user} 
                 setSelectedChannel = {(channel) => this.props.setSelectedChannel(channel)}
                 setPrivateChannel ={() => this.props.setPrivateChannel(true)}
+                isPrivateChannel = {this.props.isPrivateChannel}
+
             />
         </Menu>
         );
@@ -48,6 +51,7 @@ const mapStateToProps = state => ({
     user: state.auth.user,
     selectedChannel: state.channel.selectedChannel,
     channelList: state.channel.channelList,
+    isPrivateChannel: state.channel.isPrivateChannel,
     primaryColor: state.color.primaryColor,
 });
 

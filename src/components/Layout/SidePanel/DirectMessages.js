@@ -31,13 +31,15 @@ class DirectMessages extends React.Component {
 
         this.state.connectedRef.on("value", snap => {
         if (snap.val() === true) {
-            const ref = this.state.presenceRef.child(currentUserUid);
-            ref.set(true);
-            ref.onDisconnect().remove(err => {
-                if (err !== null) {
-                    console.error(err);
-                }
-            });
+            if(currentUserUid){
+                const ref = this.state.presenceRef.child(currentUserUid);
+                ref.set(true);
+                ref.onDisconnect().remove(err => {
+                    if (err !== null) {
+                        console.error(err);
+                    }
+                });
+            } 
         }
         });
 
@@ -102,7 +104,7 @@ class DirectMessages extends React.Component {
             {users.map(user => (
             <Menu.Item
                 key={user.uid}
-                active={user.uid === activeChannel}
+                active={this.props.isPrivateChannel ? user.uid === activeChannel : false}
                 onClick={() => this.changeChannel(user)}
                 style={{ opacity: 0.7, fontStyle: "italic" }}
             >

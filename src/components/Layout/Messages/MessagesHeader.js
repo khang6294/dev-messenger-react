@@ -22,7 +22,9 @@ class MessagesHeader extends React.Component {
             <Icon name={"star outline"} color="black" />
             }
             </span>
+            {!this.props.isPrivateChannel &&
             <Header.Subheader>{this.props.numOfUsers}</Header.Subheader>
+            }
             </Header>
 
             <Header floated="right">

@@ -26,9 +26,6 @@ const messageDisplay = (props) => {
             ))}
           </>)
     }
-    else {
-        displayMessages = <p>Loading...</p>
-    }
     return (
         <Segment>
             <Comment.Group className="messages">

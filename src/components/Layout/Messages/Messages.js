@@ -91,21 +91,21 @@ class Messages extends React.Component {
             }
         });
     
-        // this.state.connectedRef.on("value", snap => {
-        //     console.log(channelId)
-        //     console.log(this.props.user.uid)
-        //     if (snap.val() === true) {
-        //         this.state.typingRef
-        //             .child(channelId)
-        //             .child(this.props.user.uid)
-        //             .onDisconnect()
-        //             .remove(err => {
-        //                 if (err !== null) {
-        //                     console.error(err);
-        //                 }
-        //             });
-        //     }
-        // });
+        this.state.connectedRef.on("value", snap => {
+            if(this.props.user.uid){
+                if (snap.val() === true) {
+                    this.state.typingRef
+                        .child(channelId)
+                        .child(this.props.user.uid)
+                        .onDisconnect()
+                        .remove(err => {
+                            if (err !== null) {
+                                console.error(err);
+                            }
+                        });
+                }
+            }   
+        });
     };
 
     render() {

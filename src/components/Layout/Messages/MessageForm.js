@@ -124,7 +124,7 @@ class MessageForm extends React.Component {
 
     getPath = () => {
         if (this.props.isPrivateChannel) {
-          return `chat/private-${this.props.selectedChannel.id}`;
+          return `chat/private/${this.props.selectedChannel.id}`;
         } else {
           return "chat/public";
         }

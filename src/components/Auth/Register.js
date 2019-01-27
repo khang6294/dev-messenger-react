@@ -103,7 +103,7 @@ class Register extends React.Component {
                     name="password"
                     icon="lock"
                     iconPosition="left"
-                    placeholder="Password"
+                    placeholder="Password (at least 6 characters)"
                     onChange={this.handleChange}
                     value={password}
                     className={this.handleInputError(errors, "password")}
